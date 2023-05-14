@@ -7,6 +7,7 @@ const swaggerUl = require("swagger-ui-express");
 const userRouter = require("./users/users.router");
 const authRouter = require("./auth/auth.router");
 const categorieRouter = require("./categories/categories.router");
+const expensesRouter = require("./expenses/expenses.router");
 
 //const swaggerDoc = require("../swagger.json");
 
@@ -60,6 +61,7 @@ app.post("/api/v1/add-file", upload.single("my-image"), (req, res) => {
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/category", categorieRouter);
+app.use("/api/v1/expenses", expensesRouter);
 
 app.use("*", (req, res) => {
   res.status(404).json({ message: "Not Found" });

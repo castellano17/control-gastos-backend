@@ -10,11 +10,11 @@ const getAllCategorie = (req, res) => {
     .then((data) => {
       const nextPageUrl =
         data.count - offset > limit
-          ? `${host}/api/v1/users?limit=${limit}&offset=${offset + limit}`
+          ? `${host}/api/v1/category?limit=${limit}&offset=${offset + limit}`
           : null;
       const prevPageUrl =
         offset - limit >= 0
-          ? `${host}/api/v1/users?limit=${limit}&offset=${offset - limit}`
+          ? `${host}/api/v1/category?limit=${limit}&offset=${offset - limit}`
           : null;
 
       res.status(200).json({

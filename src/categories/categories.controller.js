@@ -6,6 +6,9 @@ const findAllCategories = async (limit, offset) => {
   const categories = await Category.findAndCountAll({
     limit: limit,
     offset: offset,
+    attributes: {
+      exclude: ["createdAt", "updatedAt"],
+    },
   });
   return categories;
 };
@@ -14,6 +17,9 @@ const findCategoriesById = async (id) => {
   const data = await Category.findOne({
     where: {
       id: id,
+    },
+    attributes: {
+      exclude: ["createdAt", "updatedAt"],
     },
   });
   return data;

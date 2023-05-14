@@ -39,5 +39,10 @@ router
     JwtPassport.authenticate("jwt", { session: false }),
     budgetServices.postNewBudget
   );
-
+router
+  .route("/budget/total/:id")
+  .patch(
+    JwtPassport.authenticate("jwt", { session: false }),
+    budgetServices.patchBudget
+  );
 module.exports = router;

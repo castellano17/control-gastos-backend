@@ -35,7 +35,26 @@ const postNewBudget = (req, res) => {
     });
 };
 
+const patchBudget = (req, res) => {
+  const id = req.params.id;
+  const budgetObj = req.body;
+  // const userId = re.user.id;
+
+  budgetControllers
+    .updateBudget(id, budgetObj)
+    .then((data) => {
+      if (!data) {
+        return res.status(404).json({ message: "Invalid ID" });
+      }
+      res.status(200).json(data);
+    })
+    .catch((err) => {
+      res.status(400).json({ message: "Bad request", err });
+    });
+};
+
 module.exports = {
   postNewBudget,
   getMyBudget,
+  patchBudget,
 };

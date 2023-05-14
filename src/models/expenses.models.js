@@ -11,6 +11,10 @@ const Expenses = db.define("expenses", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  amount: {
+    type: DataTypes.DECIMAL,
+    allowNull: false,
+  },
   budgetId: {
     type: DataTypes.UUID,
     allowNull: false,
