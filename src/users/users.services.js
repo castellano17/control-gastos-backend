@@ -1,4 +1,6 @@
-const { host } = require("../../config");
+//const { host } = require("../../config");
+const host = `http://${process.env.HOST}:${process.env.PORT}`;
+
 const userControllers = require("./users.controllers");
 //! const { findAllUsers, findUserById, createUser, updateUser } = require('./users.controllers')
 

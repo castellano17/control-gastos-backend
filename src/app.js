@@ -9,7 +9,7 @@ const authRouter = require("./auth/auth.router");
 const categorieRouter = require("./categories/categories.router");
 const expensesRouter = require("./expenses/expenses.router");
 
-//const swaggerDoc = require("../swagger.json");
+const swaggerDoc = require("../swagger.json");
 
 const upload = require("./middlewares/multer.middleware");
 const db = require("./utils/database");
@@ -57,7 +57,7 @@ app.post("/api/v1/add-file", upload.single("my-image"), (req, res) => {
   res.status(200).json({ message: req.file });
 });
 
-//app.use("/swagger", swaggerUl.serve, swaggerUl.setup(swaggerDoc));
+app.use("/swagger", swaggerUl.serve, swaggerUl.setup(swaggerDoc));
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/category", categorieRouter);

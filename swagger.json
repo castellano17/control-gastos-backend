@@ -1,12 +1,35 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Api de Instagram",
-    "version": "1.0.0"
+    "title": "API de Control de Presupuesto",
+    "description": "Esta API proporciona acceso a las funcionalidades de Control de Presupuesto ",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Esmir Roque",
+      "email": "castellano17@gmail.com",
+      "url": "https://www.linkedin.com/in/esmir-roque/"
+    }
   },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "ApiKeyAuth": {
+    "type": "apiKey",
+    "name": "api_key",
+    "in": "header"
+  },
+
   "paths": {
     "/api/v1/users": {
       "get": {
+        "tags": ["Usuarios"],
+        "summary": "Muestra todos los usuarios",
         "responses": {
           "200": {
             "description": "Al hacer esta petición debería retornar todos los usuarios"
@@ -16,12 +39,602 @@
     },
     "/api/v1/users/{id}": {
       "get": {
+        "tags": ["Usuarios"],
+        "summary": "Muestra un usuario en especifico",
         "parameters": [
           { "name": "id", "in": "path", "type": "string", "required": true }
         ],
         "responses": {
           "200": {
             "description": "Al hacer esta petición obtenemos un usuario en especifico"
+          },
+          "400": {
+            "description": "Bad Request: La petición es inválida o faltan parámetros"
+          }
+        }
+      }
+    },
+    "/api/v1/users/me": {
+      "get": {
+        "tags": ["Usuarios"],
+        "summary": "Muestra al usuario logueado",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Al hacer esta petición obtenemos el usuario logueado"
+          },
+          "401": {
+            "description": "Unauthorized: El usuario no está autenticado"
+          }
+        }
+      }
+    },
+    "/api/v1/users/": {
+      "post": {
+        "tags": ["Usuarios"],
+        "summary": "Crea un nuevo usuario",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "description": "El nombre del usuario"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "description": "El apellido del usuario"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "el correo del usuario"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "description": "la contraseña del usuario"
+                  },
+                  "birthday": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "La fecha del cumpleaños del usuario"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "El telefono del usuario"
+                  },
+                  "country": {
+                    "type": "string",
+                    "description": "El pais del usuario"
+                  },
+                  "gender": {
+                    "type": "string",
+                    "description": "El género del usuario"
+                  }
+                },
+
+                "required": ["firstName", "lastName", "email", "password"]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Al hacer esta petición agregamos un usuario nuevo"
+          },
+          "400": {
+            "description": "Bad Request: La petición es inválida o faltan parámetros"
+          }
+        }
+      }
+    },
+    "/api/v1/users/update/{id}": {
+      "patch": {
+        "tags": ["Usuarios"],
+        "summary": "Actualiza un usuario",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "El ID del usuario a actualizar",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "minProperties": 1,
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "description": "El nombre del usuario"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "description": "El apellido del usuario"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "el correo del usuario"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "description": "la contraseña del usuario"
+                  },
+                  "birthday": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "La fecha del cumpleaños del usuario"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "El telefono del usuario"
+                  },
+                  "country": {
+                    "type": "string",
+                    "description": "El pais del usuario"
+                  },
+                  "gender": {
+                    "type": "string",
+                    "description": "El género del usuario"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Al hacer esta petición actulizamos un usuario"
+          },
+          "400": {
+            "description": "Bad Request: La petición es inválida o faltan parámetros"
+          }
+        }
+      }
+    },
+    "/api/v1/users/delete/{id}": {
+      "delete": {
+        "tags": ["Usuarios"],
+        "summary": "Elimina un usuario en especifico",
+        "security": [
+          {
+            "BearerAuth": [],
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "El ID del usuario a eliminar",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Al hacer esta petición se elimina un usuario en especifico"
+          },
+          "400": {
+            "description": "Bad Request: La petición es inválida o faltan parámetros"
+          }
+        }
+      }
+    },
+
+    "/api/v1/users/budget/total": {
+      "get": {
+        "tags": ["Presupuesto"],
+        "summary": "Muestra el presupuesto del usuario logueado",
+        "security": [
+          {
+            "BearerAuth": [],
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Al hacer esta petición debería retornar el presupuesto del usuario"
+          },
+          "401": {
+            "description": "Error: Unauthorized "
+          }
+        }
+      }
+    },
+    "/api/v1/users/budget/total/new": {
+      "post": {
+        "tags": ["Presupuesto"],
+        "summary": "Permite agregar el presupuesto al usuario",
+        "security": [
+          {
+            "BearerAuth": [],
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Objeto que contiene el monto del presupuesto",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "number",
+                  "description": "Monto del presupuesto a asignar al usuario"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Al hacer esta petición debería agregar el presupuesto del usuario"
+          },
+          "400": {
+            "description": "El usuario ya tiene presupuesto asignado "
+          }
+        }
+      }
+    },
+    "/api/v1/users/budget/total/{id}": {
+      "patch": {
+        "tags": ["Presupuesto"],
+        "summary": "Permite modificar el presupuesto al usuario",
+        "security": [
+          {
+            "BearerAuth": [],
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "El ID del presupuesto a modificar",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "minProperties": 1,
+                "properties": {
+                  "total": {
+                    "type": "number",
+                    "description": "El monto a editar"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Al hacer esta petición debería editar el presupuesto del usuario"
+          }
+        }
+      }
+    },
+
+    "/api/v1/category": {
+      "get": {
+        "tags": ["Categorías"],
+        "summary": "Muestra las categorías",
+        "security": [
+          {
+            "BearerAuth": [],
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Al hacer esta petición debería retornar las categorías"
+          },
+          "401": {
+            "description": "Error: Unauthorized "
+          }
+        }
+      }
+    },
+    "/api/v1/category/{id}": {
+      "get": {
+        "tags": ["Categorías"],
+        "summary": "Muestra una categoría en especifico",
+        "parameters": [
+          { "name": "id", "in": "path", "type": "string", "required": true }
+        ],
+        "responses": {
+          "200": {
+            "description": "Al hacer esta petición obtenemos una categoría en especifico"
+          },
+          "400": {
+            "description": "Bad Request: La petición es inválida o faltan parámetros"
+          }
+        }
+      }
+    },
+
+    "/api/v1/category/new": {
+      "post": {
+        "tags": ["Categorías"],
+        "summary": "Permite agregar una nueva categoría",
+        "security": [
+          {
+            "BearerAuth": [],
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Objeto que contiene las categorías",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nameCategory": {
+                  "type": "string",
+                  "description": "Nombre de la categoría"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Al hacer esta petición debería agregar una nueva Categoría"
+          }
+        }
+      }
+    },
+
+    "/api/v1/category/update/{id}": {
+      "patch": {
+        "tags": ["Categorías"],
+        "summary": "Permite modificar una categoría",
+
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "El ID de la categoría a modificar",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "minProperties": 1,
+                "properties": {
+                  "nameCategory": {
+                    "type": "string",
+                    "description": "El nombre de la categoría a editar"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Al hacer esta petición debería editar el presupuesto del usuario"
+          }
+        }
+      }
+    },
+    "/api/v1/category/delete/{id}": {
+      "delete": {
+        "tags": ["Categorías"],
+        "summary": "Elimina una categoría",
+        "security": [
+          {
+            "BearerAuth": [],
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "El ID de la categoría a eliminar",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Al hacer esta petición se elimina una categoría"
+          },
+          "400": {
+            "description": "Bad Request: La petición es inválida o faltan parámetros"
+          }
+        }
+      }
+    },
+
+    "/api/v1/expenses": {
+      "get": {
+        "tags": ["Gastos"],
+        "summary": "Muestra los gastos del usuario logueado",
+        "security": [
+          {
+            "BearerAuth": [],
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Al hacer esta petición debería retornar los gastos del usuario logueado"
+          },
+          "401": {
+            "description": "Error: Unauthorized "
+          }
+        }
+      }
+    },
+
+    "/api/v1/expenses/new": {
+      "post": {
+        "tags": ["Gastos"],
+        "summary": "Permite agregar un nuevo gasto",
+        "security": [
+          {
+            "BearerAuth": [],
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Objeto que contiene los gastos",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nameExpenses": {
+                  "type": "string",
+                  "description": "Nombre del gasto"
+                },
+                "amount": {
+                  "type": "number",
+                  "description": "Monto total del gasto"
+                },
+                "categoryId": {
+                  "type": "string",
+                  "description": "Categoría perteneciente al gasto"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Al hacer esta petición debería agregar un nuevo gasto"
+          }
+        }
+      }
+    },
+
+    "/api/v1/expenses/update/{id}": {
+      "patch": {
+        "tags": ["Gastos"],
+        "summary": "Permite modificar un gasto",
+        "security": [
+          {
+            "BearerAuth": [],
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "El ID del gasto a modificar",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "minProperties": 1,
+                "properties": {
+                  "nameExpenses": {
+                    "type": "string",
+                    "description": "El nombre del gasto a editar"
+                  },
+                  "amount": {
+                    "type": "number",
+                    "description": "Monto total del gasto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Al hacer esta petición debería editar el presupuesto del usuario"
+          }
+        }
+      }
+    },
+    "/api/v1/expenses/delete/{id}": {
+      "delete": {
+        "tags": ["Gastos"],
+        "summary": "Elimina un gasto",
+        "security": [
+          {
+            "BearerAuth": [],
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "El ID del gasto a eliminar",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Al hacer esta petición se elimina un gasto"
+          },
+          "400": {
+            "description": "Bad Request: La petición es inválida o faltan parámetros"
           }
         }
       }

@@ -23,18 +23,18 @@ router
     userServices.getMyUser
   );
 
-router
-  .route("/:id")
-  .get(userServices.getUserById)
-  .patch(userServices.patchUser)
-  .delete(userServices.deleteUser);
+router.route("/:id").get(userServices.getUserById);
+router.route("/delete/:id").delete(userServices.deleteUser);
+router.route("/update/:id").patch(userServices.patchUser);
 
 router
   .route("/budget/total")
   .get(
     JwtPassport.authenticate("jwt", { session: false }),
     budgetServices.getMyBudget
-  )
+  );
+router
+  .route("/budget/total/new")
   .post(
     JwtPassport.authenticate("jwt", { session: false }),
     budgetServices.postNewBudget

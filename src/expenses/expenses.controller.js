@@ -73,10 +73,13 @@ const updateExpense = async (expenseId, expenseObject) => {
     throw new Error("Expense not found");
   }
 
-  const { nameExpenses, categoryId } = expenseObject;
+  const { nameExpenses, amount, categoryId } = expenseObject;
 
   if (nameExpenses) {
     expense.nameExpenses = nameExpenses;
+  }
+  if (amount) {
+    expense.amount = amount;
   }
 
   if (categoryId) {

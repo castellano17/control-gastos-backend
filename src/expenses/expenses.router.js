@@ -9,15 +9,17 @@ router
   .get(
     JwtPassport.authenticate("jwt", { session: false }),
     expensesServices.getAllExpense
-  )
+  );
+
+router
+  .route("/new")
   .post(
     JwtPassport.authenticate("jwt", { session: false }),
     expensesServices.postNewExpense
   );
-router
-  .route("/:id")
-  // .get(expensesServices.getExpenseById)
-  .patch(expensesServices.updateExpense)
-  .delete(expensesServices.deleteExpense);
+router.route("/:id");
+// .get(expensesServices.getExpenseById)
+router.route("/update/:id").patch(expensesServices.updateExpense);
+router.route("/delete/:id").delete(expensesServices.deleteExpense);
 
 module.exports = router;
