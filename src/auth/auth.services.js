@@ -13,6 +13,12 @@ const postLogin = (req, res) => {
         {
           id: data.id,
           role: data.role,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: data.email,
+          country: data.country,
+          gender: data.gender,
+          status: data.status,
         },
         jwtSecret
       );
