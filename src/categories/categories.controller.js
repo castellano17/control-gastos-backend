@@ -7,7 +7,7 @@ const findAllCategories = async (limit, offset) => {
     limit: limit,
     offset: offset,
     attributes: {
-      exclude: ["createdAt", "updatedAt"],
+      exclude: ["updatedAt"],
     },
   });
   return categories;
