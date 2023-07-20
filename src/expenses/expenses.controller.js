@@ -12,9 +12,6 @@ const findAllExpenses = async (limit, offset, userId) => {
     limit: limit,
     offset: offset,
     where: { budgetId: budgetId },
-    attributes: {
-      exclude: ["updatedAt"],
-    },
   });
   return expenses;
 };
