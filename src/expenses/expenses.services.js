@@ -1,3 +1,4 @@
+
 const expenseControllers = require("./expenses.controller");
 
 const getAllExpense = async (req, res) => {
@@ -37,7 +38,12 @@ const getAllExpense = async (req, res) => {
       results: rows,
     });
   } catch (err) {
-    res.status(400).json({ message: "Bad request", err: err.message });
+    res.status(200).json({
+      count: 0,
+      next: null,
+      prev: null,
+      results: [],
+    });
   }
 };
 
@@ -108,18 +114,33 @@ const deleteExpense = (req, res) => {
 
   expenseControllers
     .deleteExpense(expenseId)
-    .then((data) => {
-      res.status(200);
+    .then(() => {
+      res.status(200).json({ message: "Expense deleted successfully." });
     })
     .catch((err) => {
-      console.log(err); // Agregar console.log aquí para mostrar el error
+      console.log(err);
       if (err.message === "Expense not found") {
         res.status(400).json({ message: err.message });
       } else {
-        res.status(500).json({ message: err });
+        res.status(500).json({ message: "Error deleting expense." });
       }
     });
 };
+
+const deleteAllExpensesByBudget = (req, res) => {
+  const budgetId = req.params.budgetId;
+
+  expenseControllers
+    .deleteAllExpensesByBudget(budgetId)
+    .then(() => {
+      res.status(200).json({ message: "Expenses deleted successfully." });
+    })
+    .catch((err) => {
+      console.log(err); // Agregar console.log aquí para mostrar el error
+      res.status(500).json({ message: "Error deleting expenses by budget." });
+    });
+};
+
 
 module.exports = {
   getAllExpense,
@@ -127,4 +148,5 @@ module.exports = {
   postNewExpense,
   updateExpense,
   deleteExpense,
+  deleteAllExpensesByBudget,
 };
