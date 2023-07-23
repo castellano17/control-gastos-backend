@@ -12,6 +12,9 @@ const findAllExpenses = async (limit, offset, userId) => {
     limit: limit,
     offset: offset,
     where: { budgetId: budgetId },
+    attributes: {
+      exclude: ["updatedAt"],
+    },
   });
   return expenses;
 };
@@ -106,10 +109,35 @@ const deleteExpense = async (expenseId) => {
   return expense;
 };
 
+const deleteAllExpensesByBudget = async (budgetId) => {
+  try {
+    const expenses = await Expenses.findAll({
+      where: {
+        budgetId: budgetId,
+      },
+    });
+
+    if (expenses.length === 0) {
+      throw new Error("No expenses found for the given budgetId");
+    }
+
+    // Eliminar cada gasto encontrado
+    for (const expense of expenses) {
+      await expense.destroy();
+    }
+
+    return expenses;
+  } catch (error) {
+    throw new Error("Error deleting expenses by budget."); // Enviar un mensaje de error genérico
+  }
+};
+
+
 module.exports = {
   findAllExpenses,
   // findExpensesById,
   createExpense,
   updateExpense,
   deleteExpense,
+  deleteAllExpensesByBudget,
 };
