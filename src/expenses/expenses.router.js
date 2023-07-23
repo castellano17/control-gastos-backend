@@ -22,4 +22,9 @@ router.route("/:id");
 router.route("/update/:id").patch(expensesServices.updateExpense);
 router.route("/delete/:id").delete(expensesServices.deleteExpense);
 
+router.route("/deleteAll/:budgetId").delete(
+  JwtPassport.authenticate("jwt", { session: false }),
+  expensesServices.deleteAllExpensesByBudget
+);
+
 module.exports = router;
